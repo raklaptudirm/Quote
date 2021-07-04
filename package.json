@@ -6,10 +6,14 @@
   "dependencies": {
     "chalk": "^4.1.1"
   },
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "devDependencies": {
+    "@tsconfig/node14": "^1.0.1",
+    "@types/node": "^16.0.0"
   },
-  "author": "Rak Laptudirm",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --outDir ./bin"
+  },
+  "author": "Rak Laptudirm <raklaptudirm@gmail.com>",
   "license": "MIT"
 }

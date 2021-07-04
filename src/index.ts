@@ -7,22 +7,22 @@ const EMPHASIS: QuoteBlockType = "emphasis"
 const NORMAL: QuoteBlockType = "normal"
 
 interface QuoteFormat {
-	type: QuoteBlockType,
-	data: string
+  type: QuoteBlockType
+  data: string
 }
 
 interface Quote {
-	data: QuoteFormat[],
-	favourite: boolean
+  data: QuoteFormat[]
+  favourite: boolean
 }
 
 interface QuoteString {
-  data: string,
+  data: string
   favourite: boolean
 }
 
 interface Database {
-  quotes: QuoteString[],
+  quotes: QuoteString[]
   people: string[]
 }
 
@@ -100,42 +100,48 @@ function parseQuote(qString: QuoteString): Quote {
 }
 
 function printQuote(quote: Quote, id: number): void {
-  console.log(`${chalk.blue.bold(`[Quote ID: ${id}]`)}${quote.favourite ? chalk.blue.bold(" ♥") : ""}`)
+  console.log(
+    `${chalk.blue.bold(`[Quote ID: ${id}]`)}${
+      quote.favourite ? chalk.blue.bold(" ♥") : ""
+    }`
+  )
   console.log(formatQuote(quote.data))
 }
 
 function formatQuote(quote: QuoteFormat[]): string {
-  return quote.map(item => {
-    if (item.type === EMPHASIS)
-      return chalk.yellow.bold(item.data)
-    if (item.type === NORMAL)
-      return item.data
-    return chalk.bold(variables[item.data])
-  }).join("")
+  return quote
+    .map(item => {
+      if (item.type === EMPHASIS) return chalk.yellow.bold(item.data)
+      if (item.type === NORMAL) return item.data
+      return chalk.bold(variables[item.data])
+    })
+    .join("")
 }
 
-function random (limit: number): number {
-	const rand = require("crypto").randomInt
-	const packets: number = Math.floor(limit / 10)
+function random(limit: number): number {
+  const rand = require("crypto").randomInt
+  const packets: number = Math.floor(limit / 10)
 
-	let packet: number
+  let packet: number
 
-	if (packets > 10) {
-		packet = random(packets)
-	} else {
-		packet = rand(0, packets)
-	}
+  if (packets > 10) {
+    packet = random(packets)
+  } else {
+    packet = rand(0, packets)
+  }
 
-	return packet * 10 + rand(0, 10)
+  return packet * 10 + rand(0, 10)
 }
 
 const args: string[] = process.argv.slice(2)
 
-let database: Database = JSON.parse(fs.readFileSync(__dirname + "/../database.json"))
+let database: Database = JSON.parse(
+  fs.readFileSync(__dirname + "/../database.json")
+)
 let variables: any = database.people
 
 switch (args[0]) {
-	case undefined:
+  case undefined:
     const index: number = random(database.quotes.length)
     printQuote(parseQuote(database.quotes[index]), index + 1)
 }
